@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>רעיונות לסרטונים לגיוס עובדים - גן ניוטון</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.2em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .intro {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-right: 4px solid #667eea;
+        }
+        
+        .counter {
+            position: sticky;
+            top: 20px;
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .counter.warning {
+            background: #e74c3c;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .option {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .option:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .option.selected {
+            border-color: #667eea;
+            background: #e8f0fe;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .option input[type="checkbox"] {
+            margin-left: 10px;
+            transform: scale(1.2);
+        }
+        
+        .option-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .option-description {
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        
+        .option-link {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: background 0.3s ease;
+        }
+        
+        .option-link:hover {
+            background: #5a6fd8;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        input[type="text"], input[type="email"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+        
+        input[type="text"]:focus, input[type="email"]:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.3s ease;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .loading.show {
+            display: block;
+        }
+        
+        .results {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .results.show {
+            display: block;
+        }
+        
+        .results h3 {
+            color: #155724;
+            margin-top: 0;
+        }
+        
+        .error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .error.show {
+            display: block;
+        }
+        
+        .error h3 {
+            color: #721c24;
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎬 רעיונות לסרטונים לגיוס עובדים</h1>
+        <p class="subtitle">גן ניוטון - בחר עד 8 רעיונות שמעניינים אותך</p>
+        
+        <div class="intro">
+            <p><strong>איך זה עובד:</strong></p>
+            <p>לחץ על הרעיונות שמעניינים אותך (עד 8 אפשרויות). כל רעיון כולל קישור לסרטון לדוגמה. לאחר הבחירה, מלא את הפרטים שלך ושלח את הטופס.</p>
+        </div>
+        
+        <div class="counter" id="counter">
+            נבחרו 0 מתוך 8 אפשרויות
+        </div>
+        
+        <form id="surveyForm">
+            <div class="options">
+                <div class="option" onclick="toggleOption(this)">
+                    <input type="checkbox" name="options" value="pov-kindergarten">
+                    <div class="option-title">1. POV: את הגננת הכי מגניבה שיש</div>
+                    <div class="option-description">סרטון מהמקצוע של הגננת - איך נראה יום מהחיים של הגננת ומה זה כיף בעבודה. מציגים את הגננת בתור הכוכבת.</div>
+                </div>
+                
+                <div class="option" onclick="toggleOption(this)">
+                    <input type="checkbox" name="options" value="tell-me-teacher">
+                    <div class="option-title">2. Tell me you're a kindergarten teacher without telling me</div>
+                    <div class="option-description">רטיל שמראה קטעים וטיפוחים: מראה ילדים, מכירה את הילדים, גואה את הילדים, צועקת צעקת בליס, שיר ילדים מתנגן בראש.</div>
+                </div>
+                
+                <div class="option" onclick="toggleOption(this)">
+                    <input type="checkbox" name="options" value="13-reasons">
+                    <div class="option-title">3. 13 סיבות לגננת הכי טובה</div>
+                    <div class="option-description">ספירה קצרת קצות שבכל כל תגובה בלבד - חיבה מילים, רגש של שמח, צחוק של שמח, שיר של קולם, צחוק של ילדים, קיגם, מנצח.</div>
+                </div>
+                
+                <div class="option" onclick="toggleOption(this)">
+                    <input type="checkbox" name="options" value="this-or-that">
+                    <div class="option-title">4. זה או זה - "This or that - kindergarten edition"</div>
+                </div>
+                
+                <div class="option" onclick="toggleOption(this)">
+                    <input type="checkbox" name="options" value="5-days-difference">
+                    <div class="option-title">5. 5 ימים מצעירות לגננת הכי טובה</div>
+                    <div class="option-description">
+                        דיבור ישיר למצלמה שמספר דברים אמיתיים:
+                        <br>"תשמע מועדפת רק אן בא לי קפה בשכמה", "אל תלביש לי בגד" וכו' או "עכשיו לא לפתור דם"
+                        <br><a href="https://vt.tiktok.com/ZSBMtxLWG/" target="_blank" class="option-link">צפה בדוגמה</a>
+                    </div>
+                </div>
+                
+                <div class="option" onclick="toggleOption(this)">
+                    <input type="checkbox" name="options" value="video-about-work">
+                    <div class="option-title">6. סרטון אמיתי על העבודה</div>
+                    <div class="option-description">
+                        גננת מספרת על היום בעבודה של הגננת, מספרת על הפעילויות, הילדים, הדילגים, המשפחות.
+                        <br>מתאים גם לסביבת עבודה חברתית וליצור קשר.
+                    </div>
+                </div>
+                
+                <div class="option" onclick="toggleOption(this)">
+                    <input type="checkbox" name="options" value="what-would-you-do">
+                    <div class="option-title">7. מה את עושה כשילד בוכה/מתפרע?</div>
+                    <div class="option-description">
+                        קרינות רגשיות על הילדים ופתיחות על הכל: פיסול יציבה, חדר, ילדים משחקים, האגלנים, חיבוקים.
+                        <br>מכירות את המשפחת המשרד.
+                    </div>
+                </div>
+                
+                <div class="option" onclick="toggleOption(this)">
+                    <input type="checkbox" name="options" value="day-in-life">
+                    <div class="option-title">8. התכונות הכי חשובות בעולם</div>
+                    <div class="option-description">
+                        סרטון מרפס, שאינט ניסיוני, מבלה מילים אחרות פתוחות במספר.
+                        <br>רפרנס: <a href="https://vt.tiktok.com/ZSBMGSuVv/" target="_blank" class="option-link">צפה בדוגמה</a>
+                        <br>או: <a href="https://vt.tiktok.com/ZSBMt12q7/" target="_blank" class="option-link">דוגמה נוספת</a>
+                    </div>
+                </div>
+                
+                <div class="option" onclick="toggleOption(this)">
+                    <input type="checkbox" name="options" value="lip-sync">
+                    <div class="option-title">9. ליפ-סינק/סאונד טרנדי של גננות</div>
+                    <div class="option-description">
+                        גננת עושה ליפ-סינק לסאונד DAMME UN GRRRR ומספרת - נכנס בית קופה
+                        <br>יתרונות: משכורת 2,000 ₪, הכלסה על מגידר, קיגם, שעת עבודה, איכות צוות, חופש עשון משפחה.
+                        <br>סאונד: <a href="https://vt.tiktok.com/ZSBMnbygy/" target="_blank" class="option-link">צפה בדוגמה</a>
+                    </div>
+                </div>
+                
+                <div class="option" onclick="toggleOption(this)">
+                    <input type="checkbox" name="options" value="pov-team">
+                    <div class="option-title">10. POV: את חלק מהצוות הכי טוב</div>
+                    <div class="option-description">
+                        אנו בגביע יש מובילים מזוהים אמיתיים. זה יכול להתאים.
+                        <br>מלמד מספיק עליות בצוות הכי טוב של הגננת, פעילויות כלליות, עבודה בסביבה טובה.
+                        <br>רפרנס: <a href="https://vt.tiktok.com/ZSBMt5aFo/" target="_blank" class="option-link">צפה בדוגמה</a>
+                    </div>
+                </div>
+                
+                <div class="option" onclick="toggleOption(this)">
+                    <input type="checkbox" name="options" value="pov-interview">
+                    <div class="option-title">11. POV: את בגננת שמספרת חלק מהצוות</div>
+                    <div class="option-description">
+                        סרטון על הקיבוץ ופתיחות עם הילדים
+                        <br>רפרנס: <a href="https://vt.tiktok.com/ZSBMnajH6/" target="_blank" class="option-link">צפה בדוגמה</a>
+                    </div>
+                </div>
+                
+                <div class="option" onclick="toggleOption(this)">
+                    <input type="checkbox" name="options" value="educational-video">
+                    <div class="option-title">12. סרטון מקצועי של קיקה</div>
+                    <div class="option-description">
+                        "אנחנו מספקים שכל הגננת והילדים שלנו ייצרו את הקמפיינים שלהם"
+                        <br>הקמפיינים:
+                        <br><a href="https://vt.tiktok.com/ZSBMG3skk/" target="_blank" class="option-link">דוגמה ראשונה</a>
+                        <br><a href="https://vt.tiktok.com/ZSBMtd7Sb/" target="_blank" class="option-link">דוגמה שנייה</a>
+                    </div>
+                </div>
+                
+                <div class="option" onclick="toggleOption(this)">
+                    <input type="checkbox" name="options" value="trendy-story">
+                    <div class="option-title">13. טרנדי סיפור: מצלמת את הגננת הכי טובה בעולם</div>
+                    <div class="option-description">
+                        בהתחלה ליפ-סינק לפתיח, אבל לא מרגישה בגדול - רק פשוט עבודה שמה.
+                        <br>ואז מלא פריימים מבטים של הילדים
+                        <br>רפרנס: <a href="https://vt.tiktok.com/ZSBMWgGw4/" target="_blank" class="option-link">צפה בדוגמה</a>
+                    </div>
+                </div>
+                
+                <div class="option" onclick="toggleOption(this)">
+                    <input type="checkbox" name="options" value="trendy-education">
+                    <div class="option-title">14. טרנדי סיפור מקצועי</div>
+                    <div class="option-description">
+                        גרסות גננות ומספרות על הילד קצה מפתח :
+                        <br>רפרנס: <a href="https://vt.tiktok.com/ZSBMtJ75F/" target="_blank" class="option-link">צפה בדוגמה</a>
+                        <br>או: <a href="https://vt.tiktok.com/ZSBMttAht/" target="_blank" class="option-link">דוגמה נוספת</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="name">שם מלא:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">אימייל:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">טלפון:</label>
+                <input type="text" id="phone" name="phone">
+            </div>
+            
+            <div class="form-group">
+                <label for="comments">הערות נוספות:</label>
+                <textarea id="comments" name="comments" placeholder="אם יש לך רעיונות נוספים או הערות..."></textarea>
+            </div>
+            
+            <button type="submit" class="submit-btn">שלח את הבחירות שלי</button>
+        </form>
+        
+        <div class="loading" id="loading">
+            <h3>שולח...</h3>
+            <p>אנא המתן, התשובות נשלחות אליך במייל.</p>
+        </div>
+        
+        <div class="results" id="results">
+            <h3>תודה! הבחירות שלך נשלחו בהצלחה</h3>
+            <p>הפרטים שלך נשלחו לעודד במייל. הוא יחזור אליך בהקדם האפשרי.</p>
+        </div>
+        
+        <div class="error" id="error">
+            <h3>שגיאה בשליחה</h3>
+            <p>מצטערים, אירעה שגיאה בשליחת הטופס. אנא נסה שנית או צור קשר ישירות עם עודד במייל: oded999@gmail.com</p>
+        </div>
+    </div>
+    
+    <script>
+        let selectedCount = 0;
+        const maxSelections = 8;
+        
+        function toggleOption(optionElement) {
+            const checkbox = optionElement.querySelector('input[type="checkbox"]');
+            
+            if (checkbox.checked) {
+                checkbox.checked = false;
+                optionElement.classList.remove('selected');
+                selectedCount--;
+            } else {
+                if (selectedCount < maxSelections) {
+                    checkbox.checked = true;
+                    optionElement.classList.add('selected');
+                    selectedCount++;
+                } else {
+                    alert('ניתן לבחור עד ' + maxSelections + ' אפשרויות בלבד');
+                    return;
+                }
+            }
+            
+            updateCounter();
+        }
+        
+        function updateCounter() {
+            const counter = document.getElementById('counter');
+            counter.textContent = `נבחרו ${selectedCount} מתוך ${maxSelections} אפשרויות`;
+            
+            if (selectedCount === maxSelections) {
+                counter.classList.add('warning');
+            } else {
+                counter.classList.remove('warning');
+            }
+        }
+        
+        // Handle form submission
+        document.getElementById('surveyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (selectedCount === 0) {
+                alert('אנא בחר לפחות אפשרות אחת');
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('loading').classList.add('show');
+            document.getElementById('surveyForm').style.display = 'none';
+            
+            // Collect selected options
+            const selectedOptions = [];
+            const checkboxes = document.querySelectorAll('input[name="options"]:checked');
+            checkboxes.forEach(checkbox => {
+                const optionElement = checkbox.closest('.option');
+                const title = optionElement.querySelector('.option-title').textContent;
+                selectedOptions.push(title);
+            });
+            
+            // Get form data
+            const formData = new FormData(this);
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const phone = formData.get('phone') || 'לא צוין';
+            const comments = formData.get('comments') || 'אין הערות';
+            
+            // Prepare email content
+            const emailContent = `
+נושא: תשובה חדשה - רעיונות לסרטונים (${name})
+
+שם: ${name}
+אימייל: ${email}
+טלפון: ${phone}
+הערות: ${comments}
+
+הרעיונות שנבחרו:
+${selectedOptions.map(option => `• ${option}`).join('\n')}
+
+---
+הטופס נשלח בתאריך: ${new Date().toLocaleDateString('he-IL')} בשעה: ${new Date().toLocaleTimeString('he-IL')}
+            `;
+            
+            // Send email using FormSubmit
+            const submitData = new FormData();
+            submitData.append('name', name);
+            submitData.append('email', email);
+            submitData.append('phone', phone);
+            submitData.append('comments', comments);
+            submitData.append('selected_options', selectedOptions.join('\n• '));
+            submitData.append('_subject', `תשובה חדשה - רעיונות לסרטונים (${name})`);
+            submitData.append('_template', 'table');
+            submitData.append('_next', window.location.href);
+
+            fetch('https://formsubmit.co/oded999@gmail.com', {
+                method: 'POST',
+                body: submitData
+            })
+            .then(response => {
+                // Hide loading
+                document.getElementById('loading').classList.remove('show');
+                
+                if (response.ok) {
+                    // Show success
+                    document.getElementById('results').classList.add('show');
+                } else {
+                    // Show error
+                    document.getElementById('error').classList.add('show');
+                }
+            })
+            .catch(error => {
+                // Hide loading and show error
+                document.getElementById('loading').classList.remove('show');
+                document.getElementById('error').classList.add('show');
+            });
+        });
+        
+        // Prevent checkbox click from bubbling
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        });
+    </script>
+</body>
+</html>
